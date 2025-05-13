@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Cono de cartón",
+        "price": 150.50,
+        "imgUrl": "/imgs/1.PNG"
+    },
+    {
+        "id": 2,
+        "name": "Recipiente de cartón",
+        "price": 250.25,
+        "imgUrl": "/imgs/2.PNG"
+    },
+    {
+        "id": 3,
+        "name": "Caja de san valentín",
+        "price": 3000,
+        "imgUrl": "/imgs/3.PNG"
+    }
+]
