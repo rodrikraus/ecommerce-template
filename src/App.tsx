@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
-import { Home } from './pages/Home'
+import { Inicio } from './pages/Inicio'
 import { About } from './pages/About'
-import { Store } from './pages/Store'
+import { Tienda } from './pages/Tienda'
 import { NavBar } from './components/Navbar'
 import { ShoppingCartProvider } from './context/ShoppingCartContext'
 
@@ -13,8 +13,8 @@ function App() {
     <NavBar />
       <Container className='mb-4'>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/store" element={<Store/>} />
+        <Route path="/" element={<Inicio/>} />
+        <Route path="/tienda" element={<Tienda/>} />
         <Route path="/about" element={<About/>} />
       </Routes>
     </Container>

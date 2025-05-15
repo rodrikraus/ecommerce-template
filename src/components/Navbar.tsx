@@ -1,9 +1,21 @@
 import { Button, Container, Nav, Navbar as NavBarBs, Offcanvas } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useShoppingCart } from "../context/ShoppingCartContext";
+import { useState } from "react";
 
 export function NavBar() {
     const { openCart, cartQuantity } = useShoppingCart();
+    const [showOffcanvas, setShowOffcanvas] = useState(false);
+
+    // Function to close Offcanvas when clicking a Nav.Link
+    function handleClose() {
+        setShowOffcanvas(false);
+    }
+
+    // Function to open Offcanvas (called by toggle button)
+    function handleShow() {
+        setShowOffcanvas(true);
+    }
 
     return (
         <NavBarBs sticky="top" expand="lg" className="bg-white shadow-sm mb-2 py-1">
@@ -13,39 +25,31 @@ export function NavBar() {
                     <img src="/imgs/logo.PNG" alt="Logo" className="me-3" style={{ cursor: "pointer", height: "3rem" }} />
                 </NavLink>
                 {/* Toggle Button for Smaller Screens */}
-                <NavBarBs.Toggle aria-controls="offcanvasNavbar" />
+                <NavBarBs.Toggle aria-controls="offcanvasNavbar" onClick={handleShow}/>
 
                 {/* Offcanvas Menu */}
-                <NavBarBs.Offcanvas id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" placement="end">
+                <NavBarBs.Offcanvas 
+                    id="offcanvasNavbar" 
+                    aria-labelledby="offcanvasNavbarLabel" 
+                    placement="end"
+                    show={showOffcanvas}
+                    onHide={handleClose}
+                >
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         {/* Navigation Links */}
                         <Nav className="me-auto d-flex align-items-center gap-3">
-                            <Nav.Link to="/" as={NavLink}>
-                                Home
+                            <Nav.Link to="/" as={NavLink} onClick={handleClose}>
+                                Inicio
                             </Nav.Link>
-                            <Nav.Link to="/store" as={NavLink}>
-                                Store
+                            <Nav.Link to="/tienda" as={NavLink} onClick={handleClose}>
+                                Tienda
                             </Nav.Link>
-                            <Nav.Link to="/about" as={NavLink}>
-                                About
+                            <Nav.Link to="/about" as={NavLink} onClick={handleClose}>
+                                Sobre nosotros
                             </Nav.Link>
-
-                            {/* Search Bar */}
-                            <div className="d-flex align-items-center position-relative">
-                                <i 
-                                    className="bi bi-search position-absolute" 
-                                    style={{ left: "12px", color: "#6c757d" }} 
-                                ></i>
-                                <input
-                                    type="text"
-                                    placeholder="Buscar..."
-                                    className="form-control rounded-pill ps-5"
-                                    style={{ width: "100%" }}
-                                />
-                            </div>
                         </Nav>
                     </Offcanvas.Body>
                 </NavBarBs.Offcanvas>
