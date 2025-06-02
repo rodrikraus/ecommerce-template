@@ -1,7 +1,6 @@
 import { Button, Offcanvas, Stack } from "react-bootstrap";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
-import storeItems from "../data/items.json"
 import { formatCurrency } from "../utilities/formatCurrency";
 
 type ShoppingCartProps = {
@@ -9,7 +8,14 @@ type ShoppingCartProps = {
 }
 
 export function ShoppingCart({isOpen}: ShoppingCartProps) {
-    const { closeCart, cartItems, removeFromCart } = useShoppingCart()
+    const { 
+        closeCart, 
+        cartItems, 
+        removeFromCart, 
+        products, 
+        productsLoading, 
+        productsError 
+    } = useShoppingCart();
 
     function handleBuy() {
         cartItems.forEach(item => removeFromCart(item.id))
@@ -25,16 +31,23 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
             <Offcanvas.Body>
                 <Stack gap={3}>
                     {cartItems.map(item => (<CartItem key={item.id} {...item}/>))}
-                    <div className="ms-auto fw-bold fs-5">
-                        Total {formatCurrency(cartItems.reduce((total, cartItem) => {
-                            const item = storeItems.find(i => i.id === cartItem.id)
-                            return total + (item?.price || 0) * cartItem.quantity
-                        }, 0))}
-                    </div>
+                    
+                    {productsLoading && <div className="ms-auto fw-bold fs-5">Loading total...</div>}
+                    
+                    {productsError && <div className="ms-auto fw-bold fs-5" style={{color: "red"}}>Error: {productsError}</div>}
+                    
+                    {!productsLoading && !productsError && (
+                        <div className="ms-auto fw-bold fs-5">
+                            Total {formatCurrency(cartItems.reduce((total, cartItem) => {
+                                const item = products.find(p => p.id === cartItem.id);
+                                return total + (item?.price || 0) * cartItem.quantity;
+                            }, 0))}
+                        </div>
+                    )}
                     <Button 
                         variant="primary" 
                         onClick={handleBuy} 
-                        disabled={cartItems.length === 0}
+                        disabled={cartItems.length === 0 || productsLoading || !!productsError}
                     >
                         Comprar
                     </Button>
