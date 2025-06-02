@@ -7,9 +7,10 @@ type StoreItemProps = {
     name: string
     price: number
     imgUrl: string
+    onItemClick?: (id: number) => void
 }
 
-export function StoreItem({id, name, price, imgUrl}:StoreItemProps) {
+export function StoreItem({id, name, price, imgUrl, onItemClick}:StoreItemProps) {
     const { getItemQuantity, 
         increaseCartQuantity, 
         decreaseCartQuantity, 
@@ -21,7 +22,11 @@ export function StoreItem({id, name, price, imgUrl}:StoreItemProps) {
             variant="top" 
             src={imgUrl} 
             height="200px" 
-            style={{objectFit: "cover"}}
+            style={{ 
+                objectFit: "cover", 
+                cursor: onItemClick ? "pointer" : "default" // Added cursor style
+            }}
+            onClick={() => onItemClick && onItemClick(id)} // Added onClick handler
         />
         <Card.Body className="d-flex flex-column">
             <Card.Title className="d-flex justify-content-between align-items-baseline mb-4">

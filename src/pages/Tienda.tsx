@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { StoreItem } from "../components/StoreItem";
+import { ProductDetailModal } from "../components/ProductDetailModal";
 
 // Define the type for the fetched items
 interface Item {
@@ -17,6 +18,24 @@ export function Tienda() {
     const [items, setItems] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const [showDetailModal, setShowDetailModal] = useState(false);
+    const [currentItemDetails, setCurrentItemDetails] = useState<Item | null>(null);
+
+    const handleOpenModalWithItemId = (id: number) => {
+        const itemToShow = items.find(item => item.id === id);
+        if (itemToShow) {
+            setCurrentItemDetails(itemToShow);
+            setShowDetailModal(true);
+        } else {
+            console.error(`Item with id ${id} not found.`);
+        }
+    };
+
+    const handleCloseDetailModal = () => {
+        setShowDetailModal(false);
+        setCurrentItemDetails(null); // Optional: clear details on close
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,10 +84,22 @@ export function Tienda() {
             <Row md={2} xs={1} lg={3} className="g-3">
                 {filteredItems.map((item) => (
                     <Col key={item.id}>
-                        <StoreItem id={item.id} name={item.name} price={item.price} imgUrl={item.imageUrl} />
+                        <StoreItem 
+                            id={item.id} 
+                            name={item.name} 
+                            price={item.price} 
+                            imgUrl={item.imageUrl}
+                            onItemClick={handleOpenModalWithItemId} // Pass the new handler
+                        />
                     </Col>
                 ))}
             </Row>
+            
+            <ProductDetailModal 
+                show={showDetailModal} 
+                onHide={handleCloseDetailModal} 
+                item={currentItemDetails} 
+            />
         </>
     );
 }
