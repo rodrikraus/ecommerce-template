@@ -82,20 +82,45 @@ export function ShoppingCartProvider({ children }:ShoppingCartProviderProps) {
     }
 
     function increaseCartQuantity(id: number) {
-        setCartItems(currItems => {
-          if (currItems.find(item => item.id === id) == null) {
-            return [...currItems, { id, quantity: 1 }]
+      // Find the product from the products list
+      const product = products.find(p => p.id === id);
+
+      // If product not found, do nothing (or handle error)
+      if (!product) {
+        console.error(`Product with id ${id} not found.`);
+        return; 
+      }
+
+      setCartItems(currItems => {
+        const itemInCart = currItems.find(item => item.id === id);
+
+        if (itemInCart == null) {
+          // Item not in cart, add if stock is available
+          if (product.stock > 0) {
+            return [...currItems, { id, quantity: 1 }];
           } else {
+            // Stock is 0, cannot add
+            console.warn(`Product ${product.name} is out of stock.`);
+            return currItems; // Return current items without adding
+          }
+        } else {
+          // Item already in cart, increase quantity if stock allows
+          if (product.stock > itemInCart.quantity) {
             return currItems.map(item => {
               if (item.id === id) {
-                return { ...item, quantity: item.quantity + 1 }
+                return { ...item, quantity: item.quantity + 1 };
               } else {
-                return item
+                return item;
               }
-            })
+            });
+          } else {
+            // Not enough stock to increase quantity
+            console.warn(`Not enough stock for ${product.name}. Current quantity: ${itemInCart.quantity}, Stock: ${product.stock}`);
+            return currItems; // Return current items without changing quantity
           }
-        })
-      }
+        }
+      });
+    }
 
       function decreaseCartQuantity(id: number) {
         setCartItems(currItems => {

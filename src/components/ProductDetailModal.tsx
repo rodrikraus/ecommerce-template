@@ -28,19 +28,38 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ show, on
                 <Modal.Title>{item.name}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <img 
-                    src={item.imageUrl} 
-                    alt={item.name} 
-                    style={{ 
-                        width: "100%", 
-                        maxHeight: "400px", // Max height to avoid overly large images
-                        objectFit: "contain", // 'contain' to see the whole image
-                        marginBottom: "1rem" 
-                    }} 
-                />
+                <div style={{ position: "relative", marginBottom: "1rem" }}>
+                    <img 
+                        src={item.imageUrl} 
+                        alt={item.name} 
+                        style={{ 
+                            width: "100%", 
+                            maxHeight: "400px", 
+                            objectFit: "contain",
+                            filter: item.stock < 1 ? "grayscale(100%)" : "none" 
+                        }} 
+                    />
+                    {item.stock < 1 && (
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            color: 'white',
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            padding: '10px 20px',
+                            borderRadius: '5px',
+                            fontSize: '1.5rem',
+                            fontWeight: 'bold',
+                            zIndex: 1 
+                        }}>
+                            Sin stock
+                        </div>
+                    )}
+                </div>
                 <p>{item.description}</p>
                 <p><strong>Price:</strong> {formatCurrency(item.price)}</p>
-                <p><strong>Stock:</strong> {item.stock > 0 ? item.stock : <span style={{color: 'red'}}>Out of Stock</span>}</p>
+                <p><strong>Stock:</strong> {item.stock}</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onHide}>

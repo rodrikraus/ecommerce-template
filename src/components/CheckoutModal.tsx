@@ -43,46 +43,46 @@ export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }:
   return (
     <Modal show={show} onHide={onModalClose} centered backdrop={isSubmitting ? "static" : true} keyboard={!isSubmitting}>
       <Modal.Header closeButton={!isSubmitting}>
-        <Modal.Title>Checkout</Modal.Title>
+        <Modal.Title>Ingrese sus datos</Modal.Title>
       </Modal.Header>
       <Form noValidate validated={validated} onSubmit={onSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Dirección de correo electrónico</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Enter email"
+              placeholder="Ingrese su correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               disabled={isSubmitting}
             />
             <Form.Control.Feedback type="invalid">
-              Please provide a valid email.
+              Por favor ingresar un mail válido.
             </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicAddress">
-            <Form.Label>Shipping Address</Form.Label>
+            <Form.Label>Dirección de envío</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter shipping address"
+              placeholder="Ingrese su dirección de envío"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               required
               disabled={isSubmitting}
             />
             <Form.Control.Feedback type="invalid">
-              Please provide a shipping address.
+              Por favor ingresar una dirección de envío.
             </Form.Control.Feedback>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onModalClose} disabled={isSubmitting}>
-            Cancel
+            Cancelar
           </Button>
           <Button variant="primary" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Processing...' : 'Submit Order'}
+            {isSubmitting ? 'Procesando...' : 'Comprar'}
           </Button>
         </Modal.Footer>
       </Form>
