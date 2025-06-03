@@ -87,7 +87,8 @@ export function Tienda() {
                         <StoreItem 
                             id={item.id} 
                             name={item.name} 
-                            price={item.price} 
+                            price={item.price}
+                            stock={item.stock}  
                             imgUrl={item.imageUrl}
                             onItemClick={handleOpenModalWithItemId} // Pass the new handler
                         />

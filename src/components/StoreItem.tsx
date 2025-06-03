@@ -7,10 +7,11 @@ type StoreItemProps = {
     name: string
     price: number
     imgUrl: string
+    stock: number // Added this line
     onItemClick?: (id: number) => void
 }
 
-export function StoreItem({id, name, price, imgUrl, onItemClick}:StoreItemProps) {
+export function StoreItem({id, name, price, imgUrl, stock, onItemClick}:StoreItemProps) {
     const { getItemQuantity, 
         increaseCartQuantity, 
         decreaseCartQuantity, 
@@ -30,7 +31,11 @@ export function StoreItem({id, name, price, imgUrl, onItemClick}:StoreItemProps)
         />
         <Card.Body className="d-flex flex-column">
             <Card.Title className="d-flex justify-content-between align-items-baseline mb-4">
-                <span className="fs-2">{name}</span>
+                <div>
+                    <span className="fs-2">{name}</span>
+                    <br />
+                    <span className="fs-6 text-muted">Stock: {stock}</span>
+                </div>
                 <span className="ms-2 text-muted">{formatCurrency(price)}</span>
             </Card.Title>
             <div className="mt-auto">
