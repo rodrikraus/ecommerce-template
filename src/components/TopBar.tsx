@@ -36,11 +36,11 @@ export function TopBar() {
         {/* <span style={{ marginRight: 'auto' }}></span>  */}
       </div>
       <div style={socialMediaContainerStyle}>
-        <a href="#" style={socialLinkStyle} title="Facebook">[F]</a>
-        <a href="#" style={socialLinkStyle} title="Instagram">[I]</a>
-        <a href="#" style={socialLinkStyle} title="Twitter">[T]</a>
+        <a href="https://facebook.com" style={socialLinkStyle} title="Facebook"><i className="bi bi-facebook"></i></a>
+        <a href="https://instagram.com" style={socialLinkStyle} title="Instagram"><i className="bi bi-instagram"></i></a>
+        <a href="https://twitter.com" style={socialLinkStyle} title="Twitter"><i className="bi bi-twitter"></i></a>
         <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" style={whatsappStyle} title="WhatsApp">
-          [W] +12 345 67890
+          <i className="bi bi-whatsapp"></i> +12 345 67890
         </a>
       </div>
     </div>
