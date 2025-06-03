@@ -1,4 +1,4 @@
-import { Button, Offcanvas, Stack } from "react-bootstrap";
+import { Button, Offcanvas, Stack, Modal } from "react-bootstrap";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency";
@@ -21,6 +21,7 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
 
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
     const [isSubmittingOrder, setIsSubmittingOrder] = useState(false); // Added state for submission loading
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     function handleOpenCheckoutModal() {
         if (cartItems.length === 0) {
@@ -84,10 +85,12 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
                 throw new Error(`Network response was not ok: ${response.status} ${response.statusText}. Details: ${errorData}`);
             }
             
-            alert("Compra realizada con éxito!");
+            // First, clear cart and close other UI elements
             cartItems.forEach(item => removeFromCart(item.id)); 
             setShowCheckoutModal(false); 
             closeCart(); 
+            // Then, show the success modal
+            setShowSuccessModal(true); 
         } catch (error) {
             console.error("Error during checkout:", error);
             alert(`Error al procesar la compra: ${error instanceof Error ? error.message : "Unknown error"}`);
@@ -136,6 +139,20 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
                 handleSubmit={processCheckout}
                 isSubmitting={isSubmittingOrder} // Pass loading state
             />
+
+            <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Éxito</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¡Compra realizada con éxito!
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={() => setShowSuccessModal(false)}>
+                        Aceptar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }
