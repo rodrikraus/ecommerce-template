@@ -13,7 +13,7 @@ export function About() {
             {/* Our Mission & Vision Section */}
             <Row className="mb-5 align-items-center">
                 <Col md={6} className="mb-3 mb-md-0">
-                    <Image src="/public/imgs/aboutus1.webp" rounded fluid style={{ width: '500px', height: '300px' }} />
+                    <Image src="/imgs/aboutus1.webp" rounded fluid style={{ width: '500px', height: '300px' }} />
                 </Col>
                 <Col md={6}>
                     <h2>Nuestra Misión y Visión</h2>
@@ -25,7 +25,7 @@ export function About() {
             {/* Our Story Section */}
             <Row className="mb-5 bg-light p-4 rounded align-items-center">
                 <Col md={6} className="order-md-2 mb-3 mb-md-0">
-                    <Image src="/public/imgs/aboutus2.webp" rounded fluid  style={{ width: '500px', height: '300px' }} />
+                    <Image src="/imgs/aboutus2.webp" rounded fluid  style={{ width: '500px', height: '300px' }} />
                 </Col>
                 <Col md={6} className="order-md-1">
                     <h2>Nuestra Historia</h2>
@@ -64,7 +64,7 @@ export function About() {
                 <Col>
                     <h2>Nuestro Equipo</h2>
                     <p>Somos un grupo de técnicos apasionados por la tecnología y comprometidos con brindar la mejor atención. Cada miembro del equipo aporta experiencia, dedicación y buena onda para que tu visita sea excelente.</p>
-                    <Image src="/public/imgs/aboutus3.jpg" rounded fluid style={{ width: '800px', height: '500px' }} />
+                    <Image src="/imgs/aboutus3.jpg" rounded fluid style={{ width: '800px', height: '500px' }} />
                 </Col>
             </Row>
         </Container>
