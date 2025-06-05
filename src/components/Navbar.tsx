@@ -18,7 +18,7 @@ export function NavBar() {
     }
 
     return (
-        <NavBarBs sticky="top" expand="lg" className="bg-white shadow-sm mb-2 py-1">
+        <NavBarBs sticky="top" expand="sm" className="bg-white shadow-sm mb-2 py-1">
             <Container>
                 {/* Logo  */}
                 <NavLink to="/" className="navbar-brand">
