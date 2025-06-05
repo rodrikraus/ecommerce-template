@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, ListGroup } from "react-bootstrap";
 import { StoreItem } from "../components/StoreItem";
 import { ProductDetailModal } from "../components/ProductDetailModal";
 
@@ -11,6 +11,7 @@ interface Item {
     stock: number;
     description: string;
     imageUrl: string;
+    productCategory: string; // Added this line
 }
 
 export function Tienda() {
@@ -18,6 +19,8 @@ export function Tienda() {
     const [items, setItems] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
+    const [categories, setCategories] = useState<string[]>([]);
 
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [currentItemDetails, setCurrentItemDetails] = useState<Item | null>(null);
@@ -46,6 +49,9 @@ export function Tienda() {
                 }
                 const data = await response.json();
                 setItems(data);
+                // New lines for category extraction:
+                const uniqueCategories = Array.from(new Set(data.map((item: Item) => item.productCategory)));
+                setCategories(['Todos', ...uniqueCategories.filter(category => category != null).map(String)]);
             } catch (e) {
                 console.error("Error fetching data:", e);
                 setError("Failed to load products. Please try again later.");
@@ -57,9 +63,11 @@ export function Tienda() {
         fetchData();
     }, []);
 
-    const filteredItems = items.filter((item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredItems = items.filter((item) => {
+        const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = selectedCategory === "" || selectedCategory === "Todos" || item.productCategory === selectedCategory;
+        return matchesSearchTerm && matchesCategory;
+    });
 
     if (loading) {
         return (
@@ -105,29 +113,49 @@ export function Tienda() {
 
     return (
         <>
-            <h1>Tienda</h1>
-            <div className="mb-4">
-                <input
-                    type="text"
-                    placeholder="Buscar..."
-                    className="form-control"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
-            <Row md={2} xs={1} lg={3} className="g-3">
-                {filteredItems.map((item) => (
-                    <Col key={item.id}>
-                        <StoreItem 
-                            id={item.id} 
-                            name={item.name} 
-                            price={item.price}
-                            stock={item.stock}  
-                            imgUrl={item.imageUrl}
-                            onItemClick={handleOpenModalWithItemId} // Pass the new handler
+            <Row>
+                {/* Category Filter Column */}
+                <Col md={3}>
+                    <ListGroup>
+                        {categories.map((category) => (
+                            <ListGroup.Item
+                                key={category}
+                                action // Makes it look clickable
+                                active={category === selectedCategory || (selectedCategory === "" && category === "Todos")}
+                                onClick={() => setSelectedCategory(category === "Todos" ? "" : category)}
+                            >
+                                {category}
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                </Col>
+
+                {/* Products Column (existing content) */}
+                <Col md={9}>
+                    <div className="mb-4"> {/* Search bar */}
+                        <input
+                            type="text"
+                            placeholder="Buscar..."
+                            className="form-control"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                    </Col>
-                ))}
+                    </div>
+                    <Row md={2} xs={1} lg={3} className="g-3"> {/* Product grid */}
+                        {filteredItems.map((item) => (
+                            <Col key={item.id}>
+                                <StoreItem 
+                                    id={item.id} 
+                                    name={item.name} 
+                                    price={item.price}
+                                    stock={item.stock}  
+                                    imgUrl={item.imageUrl}
+                                    onItemClick={handleOpenModalWithItemId}
+                                />
+                            </Col>
+                        ))}
+                    </Row>
+                </Col>
             </Row>
             
             <ProductDetailModal 
