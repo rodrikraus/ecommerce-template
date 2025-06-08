@@ -62,7 +62,6 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
 
         const compraPayload = {
             fechaCompra: new Date().toISOString(),
-            totalAmount: totalAmount,
             shippingAddress: shippingAddress,
             email: email,
             user: {
