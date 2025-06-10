@@ -37,7 +37,7 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
         setShowCheckoutModal(false);
     }
 
-    async function processCheckout(email: string, shippingAddress: string): Promise<void> { // Return Promise
+    async function processCheckout(email: string, shippingAddress: string, numeroCelular: string): Promise<void> { // Return Promise
         if (productsLoading || productsError) {
             alert("Product information is not available. Please try again later.");
             return;
@@ -65,6 +65,7 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
             fechaCompra: new Date().toISOString(),
             shippingAddress: shippingAddress,
             email: email,
+            numeroCelular: numeroCelular,
             user: {
                 id: 1 //Defaults to user 1, which is the only user in the database
             },

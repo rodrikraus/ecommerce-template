@@ -4,13 +4,14 @@ import { Modal, Button, Form } from 'react-bootstrap';
 type CheckoutModalProps = {
   show: boolean;
   handleClose: () => void;
-  handleSubmit: (email: string, address: string) => Promise<void>; // Changed to Promise for async handling
+  handleSubmit: (email: string, address: string, numeroCelular: string) => Promise<void>; // Changed to Promise for async handling
   isSubmitting: boolean; // New prop for loading state
 };
 
 export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }: CheckoutModalProps) {
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
+  const [numeroCelular, setNumeroCelular] = useState('');
   const [validated, setValidated] = useState(false);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -23,7 +24,7 @@ export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }:
       return;
     }
 
-    await handleSubmit(email, address); // Await the submission
+    await handleSubmit(email, address, numeroCelular); // Await the submission
     // Only reset fields if submission was successful (or handle errors appropriately)
     // For now, assuming handleSubmit will manage modal closure on success
     // Resetting fields here might clear them before user sees an error message if modal isn't closed by handleSubmit
@@ -36,6 +37,7 @@ export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }:
     if (isSubmitting) return; // Prevent closing while submitting
     setEmail('');
     setAddress('');
+    setNumeroCelular('');
     setValidated(false);
     handleClose();
   }
@@ -54,12 +56,8 @@ export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }:
               placeholder="Ingrese su correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
               disabled={isSubmitting}
             />
-            <Form.Control.Feedback type="invalid">
-              Por favor ingresar un mail válido.
-            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicAddress">
@@ -74,6 +72,21 @@ export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }:
             />
             <Form.Control.Feedback type="invalid">
               Por favor ingresar una dirección de envío.
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPhoneNumber">
+            <Form.Label>Número de celular</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Ingrese su número de celular"
+              value={numeroCelular}
+              onChange={(e) => setNumeroCelular(e.target.value)}
+              required
+              disabled={isSubmitting}
+            />
+            <Form.Control.Feedback type="invalid">
+              Por favor ingresar un número de celular.
             </Form.Control.Feedback>
           </Form.Group>
         </Modal.Body>
