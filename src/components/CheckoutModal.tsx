@@ -61,7 +61,7 @@ export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }:
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicAddress">
-            <Form.Label>Dirección de envío</Form.Label>
+            <Form.Label>Dirección de envío*</Form.Label>
             <Form.Control
               type="text"
               placeholder="Ingrese su dirección de envío"
@@ -76,7 +76,7 @@ export function CheckoutModal({ show, handleClose, handleSubmit, isSubmitting }:
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPhoneNumber">
-            <Form.Label>Número de celular</Form.Label>
+            <Form.Label>Número de celular*</Form.Label>
             <Form.Control
               type="text"
               placeholder="Ingrese su número de celular"
