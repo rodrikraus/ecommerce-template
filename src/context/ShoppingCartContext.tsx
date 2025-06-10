@@ -65,7 +65,7 @@ export function ShoppingCartProvider({ children }:ShoppingCartProviderProps) {
             setProducts(data);
         } catch (error) {
             console.error("Error fetching products:", error);
-            setProductsError("Failed to load product information.");
+            setProductsError("Hubo un error. Por favor comunicarse al número de Whatsapp. Muchas gracias por su paciencia.");
         } finally {
             setProductsLoading(false);
         }
