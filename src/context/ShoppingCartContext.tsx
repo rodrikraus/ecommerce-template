@@ -34,6 +34,7 @@ type ShoppingCartContext = {
     products: Product[] // Add products to context type
     productsLoading: boolean // Add loading state for products
     productsError: string | null // Add error state for products
+    refreshProducts: () => Promise<void> // Add refreshProducts to context type
 }
 
 const ShoppingCartContext = createContext({} as ShoppingCartContext)
@@ -51,24 +52,27 @@ export function ShoppingCartProvider({ children }:ShoppingCartProviderProps) {
     const [productsLoading, setProductsLoading] = useState(true);
     const [productsError, setProductsError] = useState<string | null>(null);
 
-    // useEffect to fetch products
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch("http://localhost:8080/api/productos");
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setProducts(data);
-            } catch (error) {
-                console.error("Error fetching products:", error);
-                setProductsError("Failed to load product information.");
-            } finally {
-                setProductsLoading(false);
+    // Define fetchProducts function
+    const fetchProducts = async () => {
+        setProductsLoading(true);
+        setProductsError(null);
+        try {
+            const response = await fetch("http://localhost:8080/api/productos");
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        };
+            const data = await response.json();
+            setProducts(data);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+            setProductsError("Failed to load product information.");
+        } finally {
+            setProductsLoading(false);
+        }
+    };
 
+    // useEffect to fetch products on mount
+    useEffect(() => {
         fetchProducts();
     }, []);
 
@@ -157,6 +161,7 @@ export function ShoppingCartProvider({ children }:ShoppingCartProviderProps) {
             products, // Expose products
             productsLoading, // Expose productsLoading
             productsError, // Expose productsError
+            refreshProducts: fetchProducts, // Expose refreshProducts
         }}>
             {children}
         <ShoppingCart isOpen={isOpen}/>

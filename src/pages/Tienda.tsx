@@ -2,23 +2,17 @@ import { useState, useEffect } from "react";
 import { Col, Row, ListGroup } from "react-bootstrap";
 import { StoreItem } from "../components/StoreItem";
 import { ProductDetailModal } from "../components/ProductDetailModal";
-
-// Define the type for the fetched items
-interface Item {
-    id: number;
-    name: string;
-    price: number;
-    stock: number;
-    description: string;
-    imageUrl: string;
-    productCategory: string; // Added this line
-}
+import { useShoppingCart } from "../context/ShoppingCartContext"; // Import useShoppingCart
+import type { Product as Item } from "../context/ShoppingCartContext"; // Use Product as Item
 
 export function Tienda() {
+    const { 
+        products: items, // Use products as items
+        productsLoading: loading, // Use productsLoading as loading
+        productsError: error // Use productsError as error
+    } = useShoppingCart();
+
     const [searchTerm, setSearchTerm] = useState("");
-    const [items, setItems] = useState<Item[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [categories, setCategories] = useState<string[]>([]);
 
@@ -28,7 +22,8 @@ export function Tienda() {
     const handleOpenModalWithItemId = (id: number) => {
         const itemToShow = items.find(item => item.id === id);
         if (itemToShow) {
-            setCurrentItemDetails(itemToShow);
+            // Assuming Item type now includes productCategory or it's dynamically available
+            setCurrentItemDetails(itemToShow as Item); 
             setShowDetailModal(true);
         } else {
             console.error(`Item with id ${id} not found.`);
@@ -40,30 +35,18 @@ export function Tienda() {
         setCurrentItemDetails(null); // Optional: clear details on close
     };
 
+    // useEffect to update categories when items change
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch("http://localhost:8080/api/productos");
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setItems(data);
-                // New lines for category extraction:
-                const uniqueCategories = Array.from(new Set(data.map((item: Item) => item.productCategory)));
-                setCategories(['Todos', ...uniqueCategories.filter(category => category != null).map(String)]);
-            } catch (e) {
-                console.error("Error fetching data:", e);
-                setError("Failed to load products. Please try again later.");
-            } finally {
-                setLoading(false);
-            }
-        };
+        if (items && items.length > 0) {
+            // Assuming 'productCategory' exists on items from context
+            const uniqueCategories = Array.from(new Set(items.map((item: any) => item.productCategory)));
+            setCategories(['Todos', ...uniqueCategories.filter(category => category != null).map(String)]);
+        } else {
+            setCategories(['Todos']);
+        }
+    }, [items]);
 
-        fetchData();
-    }, []);
-
-    const filteredItems = items.filter((item) => {
+    const filteredItems = items.filter((item: any) => { // Use 'any' for now for productCategory
         const matchesSearchTerm = item.name.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = selectedCategory === "" || selectedCategory === "Todos" || item.productCategory === selectedCategory;
         return matchesSearchTerm && matchesCategory;

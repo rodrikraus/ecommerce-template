@@ -16,7 +16,8 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
         removeFromCart, 
         products, 
         productsLoading, 
-        productsError 
+        productsError,
+        refreshProducts // Destructure refreshProducts
     } = useShoppingCart();
 
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
@@ -62,7 +63,6 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
 
         const compraPayload = {
             fechaCompra: new Date().toISOString(),
-            totalAmount: totalAmount,
             shippingAddress: shippingAddress,
             email: email,
             user: {
@@ -84,6 +84,9 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
                 const errorData = await response.text();
                 throw new Error(`Network response was not ok: ${response.status} ${response.statusText}. Details: ${errorData}`);
             }
+
+            // Refresh products before clearing cart and showing success
+            await refreshProducts();
             
             // First, clear cart and close other UI elements
             cartItems.forEach(item => removeFromCart(item.id)); 

@@ -31,6 +31,20 @@ export function StoreItem({id, name, price, imgUrl, stock, onItemClick}:StoreIte
                 }}
                 onClick={() => onItemClick && onItemClick(id)} // Added onClick handler
             />
+            {/* New Stock display overlay */}
+            <div style={{
+                position: "absolute",
+                top: "8px",
+                right: "8px",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                color: "white",
+                padding: "2px 8px",
+                borderRadius: "4px",
+                fontSize: "0.8rem",
+                zIndex: 1
+            }}>
+                Stock: {stock}
+            </div>
             {stock < 1 && ( /* Conditional "Sin stock" overlay */
                 <div style={{
                     position: 'absolute',
@@ -50,11 +64,7 @@ export function StoreItem({id, name, price, imgUrl, stock, onItemClick}:StoreIte
         </div>
         <Card.Body className="d-flex flex-column">
             <Card.Title className="d-flex justify-content-between align-items-baseline mb-4">
-                <div>
-                    <span className="fs-2">{name}</span>
-                    <br />
-                    <span className="fs-6 text-muted">Stock: {stock}</span>
-                </div>
+                <span className="fs-2">{name}</span>
                 <span className="ms-2 text-muted">{formatCurrency(price)}</span>
             </Card.Title>
             <div className="mt-auto">
