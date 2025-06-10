@@ -63,23 +63,55 @@ export function StoreItem({id, name, price, imgUrl, stock, onItemClick}:StoreIte
             )}
         </div>
         <Card.Body className="d-flex flex-column">
-            <Card.Title className="d-flex justify-content-between align-items-baseline mb-4">
-                <span className="fs-2">{name}</span>
-                <span className="ms-2 text-muted">{formatCurrency(price)}</span>
-            </Card.Title>
-            <div className="mt-auto">
-                {quantity === 0? (<Button className="w-100" onClick={() => increaseCartQuantity(id)} disabled={stock < 1}>+ Agregar al carrito</Button>) : 
-                <div className="d-flex align-items-center flex-column" style={{ gap: "5rem"}}>
-                    <div className="d-flex align-items-center justify-content-center" style={{ gap: "5rem"}}>
-                        <Button onClick={() => decreaseCartQuantity(id)}>-</Button>
-                        <div><span className="fs-3">{quantity}</span> en el carrito</div>
-                        
-                        <Button onClick={() => increaseCartQuantity(id)} disabled={quantity >= stock}>+</Button>
-                    </div>
-                    <Button variant="danger" size="sm" onClick={() => removeFromCart(id)}>Remover</Button>
-                </div> }
+        <Card.Title className="d-flex justify-content-between align-items-baseline mb-4">
+            <span className="fs-5 fw-bold">{name}</span>
+            <span className="text-muted">{formatCurrency(price)}</span>
+        </Card.Title>
+
+        <div className="mt-auto">
+            {quantity === 0 ? (
+            <Button
+                className="w-100 btn-primary"
+                onClick={() => increaseCartQuantity(id)}
+                disabled={stock < 1}
+            >
+                + Agregar al carrito
+            </Button>
+            ) : (
+            <div className="d-flex flex-column gap-3">
+                {/* Quantity Controls */}
+                <div className="d-flex justify-content-center align-items-center gap-3">
+                <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => decreaseCartQuantity(id)}
+                >
+                    −
+                </Button>
+                <span className="fs-5">{quantity} en el carrito</span>
+                <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => increaseCartQuantity(id)}
+                    disabled={quantity >= stock}
+                >
+                    +
+                </Button>
+                </div>
+
+                {/* Remove Button */}
+                <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={() => removeFromCart(id)}
+                >
+                Remover
+                </Button>
             </div>
+            )}
+        </div>
         </Card.Body>
+
     </Card>
     )
 }
