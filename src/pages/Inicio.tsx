@@ -1,14 +1,7 @@
-import { Button, Container, Row, Col, Card } from 'react-bootstrap'; // Added Card
+import { Button, Container, Row, Col } from 'react-bootstrap'; // Added Card
 import { Link } from 'react-router-dom';
 
 export function Inicio() {
-    // Dummy data for featured items
-    const featuredProducts = [
-        { id: 1, name: "Latest Model Phone", description: "Experience the next generation of mobile.", imagePlaceholder: "https://via.placeholder.com/300x200.png?text=Phone+1", price: "$999" },
-        { id: 2, name: "Premium Wireless Earbuds", description: "Immersive sound, all-day comfort.", imagePlaceholder: "https://via.placeholder.com/300x200.png?text=Earbuds", price: "$199" },
-        { id: 3, name: "Smartwatch Series X", description: "Stay connected, stay active.", imagePlaceholder: "https://via.placeholder.com/300x200.png?text=Smartwatch", price: "$299" },
-        { id: 4, name: "Protective Phone Case", description: "Style and security for your device.", imagePlaceholder: "https://via.placeholder.com/300x200.png?text=Case", price: "$49" },
-    ];
 
     return (
         <>

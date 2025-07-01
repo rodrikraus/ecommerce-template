@@ -45,11 +45,6 @@ export function ShoppingCart({isOpen}: ShoppingCartProps) {
 
         setIsSubmittingOrder(true); // Start loading
 
-        const totalAmount = cartItems.reduce((total, cartItem) => {
-            const item = products.find(p => p.id === cartItem.id);
-            return total + (item?.price || 0) * cartItem.quantity;
-        }, 0);
-
         const itemsPayload = cartItems.map(cartItem => {
             const product = products.find(p => p.id === cartItem.id);
             return {
